@@ -2,7 +2,9 @@ package com.annofi.ims.service;
 
 import com.annofi.ims.dto.UserInformationDTO;
 import com.annofi.ims.exception.RestMessageException;
+import com.annofi.ims.model.Role;
 import com.annofi.ims.model.User;
+import com.annofi.ims.repository.RoleRepository;
 import com.annofi.ims.repository.UserRepository;
 import com.annofi.ims.exception.ResourceNotFoundException;
 import com.annofi.ims.config.multitenant.DataSourceConfig;
@@ -19,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +34,9 @@ public class UserService {
 	
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private RoleRepository roleRepository;
     
     @Autowired
 	private DataSourceConfig dataSourceConfig;
@@ -162,6 +169,15 @@ public class UserService {
                 }else {
                 	throw new RuntimeException("Username should be greater than 5 characters");
                 }
+                
+                Set<Role> roles = new HashSet<Role>();
+                for (Role role : user.getRoleSet()) {
+					roles.add(roleRepository.findById(role.getId()).get());
+				}
+                user.getRoleSet().clear();
+                user.setRoleSet(roles);
+                user.setRoles(roles.iterator().next().getName());
+                
                 return userRepository.save(user);
             }
             else {

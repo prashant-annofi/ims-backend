@@ -43,7 +43,7 @@ public class UserController {
     {
     	try {
 	    	user = userService.createInitialUser(user);
-	    	String successMessage =  messageSource.getMessage("User Successfully added", null, locale);
+	    	String successMessage =  "User Successfully added";
 	    	return new RestSuccessMessage(successMessage);
     	}
     	catch (Exception ex) {
