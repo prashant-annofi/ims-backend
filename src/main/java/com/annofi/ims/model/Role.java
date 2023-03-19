@@ -26,7 +26,7 @@ public class Role {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Byte id;
+    private Short id;
 
 	private String name;
 	
