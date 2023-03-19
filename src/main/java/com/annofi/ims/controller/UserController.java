@@ -33,7 +33,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-    @GetMapping("/view")
+    @GetMapping("/users/view")
     public List<User> getUsers(){
     	return userService.findAll();
     }
